@@ -1,10 +1,20 @@
 var _ = require('underscore');
 _.mixin( require('underscore.deferred') );
 var Twit = require('twit');
-var T = new Twit(require('./config.js'));
 var wordfilter = require('wordfilter');
 var ent = require('ent');
-var wordnikKey = require('./permissions.js').key;
+
+if (process.env.NODE_ENV == "production") {
+  T = new Twit({
+    consumer_key:         process.env.CONSUMER_KEY,
+    consumer_secret:      process.env.CONSUMER_SECRET,
+    access_token:         process.env.ACCESS_TOKEN,
+    access_token_secret:  process.env.ACCESS_TOKEN_SECRET
+  })
+} else {
+  T = new Twit(require('./config.js'));
+};
+// var wordnikKey = require('./permissions.js').key;
 
 
 Array.prototype.pick = function() {
@@ -127,3 +137,5 @@ setInterval(function () {
 // Tweet once on initialization
 // showResults();
 tweet();
+
+console.log(process.env);
