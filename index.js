@@ -89,10 +89,11 @@ function search(term) {
         return el.trim();
       })
       .filter(function(el) {
-        var containsRealMen = (el.search(/real men/i) > -1);
+        var startsWithRealMen = (el.search(/(all |only )?real men/i) == 0);
         var noLinks = (el.search(/https?:/) == -1);
         var noMentions = (el.search(/@[^\s]/) == -1);
-        return noLinks && containsRealMen && noMentions;
+
+        return noLinks && startsWithRealMen && noMentions;
       })
       .uniq()
       .value();
